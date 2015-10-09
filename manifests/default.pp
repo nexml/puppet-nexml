@@ -57,15 +57,6 @@ class install {
 			ensure  => running,
 			require => Package['apache2'];
 	}
-
-	# create links for executables and data directories
-	file {
-		$nexmlroot: 
-			ensure  => link,
-			target  => $webfolder,
-			owner   => $apacheusr,
-			require => Exec['nexmlweb'];
-	}
 	
 	exec {	     
 	
@@ -97,6 +88,11 @@ class install {
 			command => 'cpanm .',
 			cwd     => '/var/www/html/nexml.github.io/sitebuilder/src',
 			require => [ Exec['cpanm'] ];
+		
+		# copy files to docroot
+		"copy":
+			command => "cp $webfolder/* $docroot",
+			require => Exec['nexmlweb'];
 	}
 }
 
