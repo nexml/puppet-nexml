@@ -70,7 +70,7 @@ class install {
 			command => "git clone $nexmlweb",
 			cwd     => $docroot,
 			creates => $webfolder,
-			require => [ Service['apache2'], Package['git'] ];
+			require => [ Package['apache2'], Package['git'] ];
 			
 		# install CPAN packages
 		"xml-xml2json":
