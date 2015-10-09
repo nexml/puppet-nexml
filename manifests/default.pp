@@ -5,6 +5,7 @@ $nexmlweb  = 'https://github.com/nexml/nexml.github.io.git'
 $nexmlroot = '/var/www/html/nexml'
 $webfolder = '/var/www/html/nexml.github.io'
 $apacheusr = 'www-data'
+$nexmljava = '/var/www/html/nexml.java'
 
 # update the $PATH environment variable
 Exec {
@@ -105,13 +106,14 @@ class install {
 		"nexml.java":
 			command => "git clone https://github.com/nexml/nexml.java.git",
 			cwd     => $docroot,
+			creates => $nexmljava,
 			require => [ Package['git'] ];
 		
 		# compile the validator
 		"validator":
 			environment => ["JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64"],
 			command => "ant validator",
-			cwd     => '/var/www/html/nexml.java',
+			cwd     => $nexmljava,
 			require => [ Exec['nexml.java'], Package['openjdk-6-jdk', 'ant'] ];
 		"copy_validator":
 			command => "cp nexml.java/validator.jar downloads/validator.jar",
