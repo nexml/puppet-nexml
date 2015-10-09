@@ -119,6 +119,16 @@ class install {
 			command => "cp nexml.java/validator.jar downloads/validator.jar",
 			cwd     => '/var/www/html/',
 			require => Exec['validator'];
+		
+		# install the schema files
+		"clone_schema":
+			command => "git clone https://github.com/nexml/nexml.git",
+			cwd     => $docroot,
+			creates => '/var/www/html/nexml',
+			require => Package['git'];
+		"copy_schema":
+			command => "cp --recursive /var/www/html/nexml/* /var/www/html/",
+			require => Exec['clone_schema'];
 	}
 }
 
