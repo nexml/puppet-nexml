@@ -109,7 +109,8 @@ class install {
 		
 		# compile the validator
 		"validator":
-			command => "export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64 && ant validator",
+			environment => ["JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64"],
+			command => "ant validator",
 			cwd     => '/var/www/html/nexml.java',
 			require => [ Exec['nexml.java'], Package['openjdk-6-jdk', 'ant'] ];
 		"copy_validator":
