@@ -48,6 +48,7 @@ class install {
 		"libwww-perl":         ensure => installed, require => Exec["apt_update"];
 		"libxml-twig-perl":    ensure => installed, require => Exec["apt_update"];
 		"libtemplate-perl":    ensure => installed, require => Exec["apt_update"];
+		"ant":                 ensure => installed, require => Exec["apt_update"];
 	}
 	
 	# ensure apache2 service is running
