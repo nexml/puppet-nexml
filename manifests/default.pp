@@ -55,7 +55,7 @@ class install {
 		'apache2': 
 			enable  => true,
 			ensure  => running,
-			require => Package['apache2'];
+			require => [ Package['apache2'], Exec['apache2.conf'] ];
 	}
 	
 	exec {	     
@@ -93,6 +93,11 @@ class install {
 		"copy":
 			command => "cp --recursive $webfolder/* $docroot",
 			require => Exec['nexmlweb'];
+		
+		# apply edited apache2.conf
+		"apache2.conf":
+			command => "cat $webfolder/conf/apache2.conf > /etc/apache2/apache2.conf",
+			require => [ Package['apache2'], Exec['nexmlweb'] ];
 	}
 }
 
