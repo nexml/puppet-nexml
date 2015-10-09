@@ -49,6 +49,7 @@ class install {
 		"libxml-twig-perl":    ensure => installed, require => Exec["apt_update"];
 		"libtemplate-perl":    ensure => installed, require => Exec["apt_update"];
 		"ant":                 ensure => installed, require => Exec["apt_update"];
+		"openjdk-6-jdk":       ensure => installed, require => Exec["apt_update"];
 	}
 	
 	# ensure apache2 service is running
@@ -99,6 +100,19 @@ class install {
 		"apache2.conf":
 			command => "cat $webfolder/conf/apache2.conf > /etc/apache2/apache2.conf",
 			require => [ Package['apache2'], Exec['nexmlweb'] ];
+		
+		# clone java code
+		"nexml.java":
+			command => "git clone https://github.com/nexml/nexml.java.git",
+			cwd     => $docroot,
+			require => [ Package['git'] ];
+		
+		# compile the validator
+		"validator":
+			command => "export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64 && ant validator",
+			cwd     => '/var/www/html/nexml.java',
+			require => [ Exec['nexml.java'], Package['openjdk-6-jdk', 'ant'] ];
+			
 	}
 }
 
