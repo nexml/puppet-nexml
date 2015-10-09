@@ -91,7 +91,7 @@ class install {
 		
 		# copy files to docroot
 		"copy":
-			command => "cp $webfolder/* $docroot",
+			command => "cp --recursive $webfolder/* $docroot",
 			require => Exec['nexmlweb'];
 	}
 }
